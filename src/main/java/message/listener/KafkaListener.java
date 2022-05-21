@@ -1,5 +1,6 @@
 package message.listener;
 
+import lombok.extern.slf4j.Slf4j;
 import message.data.entity.Message;
 import message.data.repository.MessageRepository;
 import message.service.TaskService;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class KafkaListener {
 
     private final MessageRepository messageRepository;
@@ -17,6 +19,7 @@ public class KafkaListener {
 
     @org.springframework.kafka.annotation.KafkaListener(topics = "messageTopic", groupId = "group")
     public void listenMessageTopic(String message) {
+        log.warn("Hello from listener! message: {}", message);
         messageRepository.save(Message.builder()
                 .message(message)
                 .build());
